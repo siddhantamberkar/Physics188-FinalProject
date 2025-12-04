@@ -4,6 +4,7 @@
 \runninghead{Shortened Running Article Title}
 \footertext{\textit{Journal X} (2023) 12:684}
 \usepackage{dsfont}
+\usepackage{amsmath}
 \hypersetup{
     colorlinks=true,
     linkcolor=blue,
@@ -29,8 +30,7 @@
 % Abstract
 \renewcommand{\maketitlehookd}{%
 \begin{abstract}
-    \textbf{Purpose} \\ 
-    \textbf{Methods}
+    dsdf.
 
 \end{abstract}
 }
@@ -41,6 +41,47 @@
 \maketitle
 
 % Introduction
+\section{Introduction}
+    In 2023, 21 million Americans were found to have experienced a major depressive episode (\cite{BrodyHughes2025}). Major Depressive Disorder (MDD), commonly referred to as clinical depression, can be detected through electroencephalogram (EEG) analysis, allowing for early diagnosis and treatment. With the advancement of deep learning methods, specifically convolutional neural networks (CNN), medical diagnoses, from tumor classification to x-ray analysis, can be automated. Neural-network-based medical diagnoses significantly reduce the associated costs of traditional diagnostic methods, potentially allowing more patients to receive the treatment they need to manage MDD. Similar studies utilized a suite of wavelet transforms of EEG data (\cite{Bagherzadeh2025_CCADD}) as well as effective connectivity between electrode channels (\cite{Miljevic2023_EEGconnectivity}) to achieve high accuracy and F1-scores in automated CNN-based MDD classification, demonstrating the merit of this approach. 
+    
+    In this paper, we examine the sufficiency of effective connectivity as a classifier for CNN-based MDD diagnosis. Recent analysis of brain connectivity shows that patients diagnosed with MDD exhibit abnormally low functional brain connectivity across various scalp locations (\cite{Fogelson2020_predictiveEEG_MDD}). The deviations from healthy patients suggest that bi-directional connectivity between EEG signal channels may be highly correlated with log-odds of MDD probability in patients. Functional connectivity, though standard, only measures how correlated two signals are, omitting the strength and direction of the causal relation between the signals. In \cite{Miljevic2023_EEGconnectivity}, the authors discuss the nuance of effective connectivity, which measures both magnitude and direction in connectivity between signals. To measure effective connectivity, the authors use Grainger Causality (GC), a statistical test that determines whether past values of one time series can predict future values of another. GC can be analyzed in both time and frequency domains, of which the aformentioned paper uses a frequency-based method known as Partial Directed Coherence (PDC). This produces an $n\times n\times B$ matrix for each patient, where $n$ is the number of electrode channels and $B$ is the number of frequency bins. The dataset provided for our paper as well as the one referred to above use 19 electrode channels, located at various positions on patients' scalps to measure EEG among different brain functional lobes. By dimensionality reduction, the authors demonstrate that the PDC matrices can be reduced down to $6\times6\times B$ matrices, which constitute the brain default mode network (DMN). 
+
+    While the authors present promising findings with high accuracy, their dataset is limited to 15 healthy control (HC) patients and 15 MDD patients, a relatively small sample size. In this paper, we use an updated dataset including 34 HC and 30 MDD patients, a two-fold increase in sample size. We also utilize both frequency and time domain GC methods using a multivariate Grainger Causality (MVGC) estimated on a multivariate autoregressive model (MVAR). Combining the frequency and time-based method resulting matrices, our final Grainger Matrix has dimension $2n\times2n\times B$, or $38\times38\times B$. Expanding on the approach outlined in \cite{Miljevic2023_EEGconnectivity}, this paper aims to improve 3D CNN  performance and extrapolation to a larger dataset. 
+
+
+\section{Methods}
+The sections below outline the data acquisition, postprocessing, and mathematical and computational frameworks used to train a 3D CNN for MDD classification. 
+\subsection{EEG Signal Data}
+Each EEG time series is acquired over a 5-min long recording of the participants during eye-close (EC) and eye-open (EO) resting states. A 19-electrode EEG cap was placed over participants' scalps at FP1, FP2, F3, F4, C3, C4, P3, P4, O1, O2, F7, F8, T3, T4, T5, T6, FZ, CZ, and PZ. The data were recorded with a sampling rate of 256 Hz, and preprocessed with a bandpass filter (0.1–70 Hz) and a 50-Hz notch filter. The EEGLAB software on Python was used for the automatic removal of artifacts using artifact subspace reconstruction (ASR) and independent component analysis (ICA). 
+
+\subsection{Partial Directed Coherence (PDC)}
+Partial directed coherence is the frequency-based counterpart to the time-based multivariate autoregressive model (MVAR) fit on EEG time series data. In this paper, we combine both time and frequency based MVGC estiamtes, which include the original and Fourier-transformed MVAR coefficients. 
+
+Let the set of $n$ simultaneously measured time series 
+\begin{equation}
+    Y(t) = [y_1(t), y_2(t),..., y_n(t)]^T
+\end{equation}
+
+be represented by an autogressive model of order \textit{p} given by: 
+\begin{equation}
+    Y(t) = \sum_{l=1}^{p}{\textbf{A}_l\textbf{Y}(t-l)}\space + \boldsymbol{\varepsilon}(t)
+\end{equation}
+where $\textbf{A}_l$ is the coefficient matrix at time lag $l$ and $\boldsymbol{\varepsilon}(t)$ is background multivariate Gaussian noise with zero mean. The MVAR coefficients $a_{uv}(l)$ represent the the effect of $y_v(t-l)$ on $y_u(t)$. Thus, $\textbf{A}_l$ is the matrix corresponding to the time-based MVGC estimate. The frequency-based Fourier transformation of matrix $\textbf{A}_l$, $\textbf{A}(f)$ then has coefficients $a_{uv}(f) = \sum_{l=1}^{p}{a_{uv}(l)e^{-i(\tfrac{2\pi}{p})lf}}$. Centering the matrix $\textbf{A}(f)$ by subtracting $\textbf{I}_n$, we get $\bar{\textbf{A}}(f)$. Finally, the PDC from electrode $u$ to $v$ denoted by $\pi_{uv}(f)$ is defined as
+\begin{equation}
+    \pi_{uv}(f) = \dfrac{\bar{a}_{uv}(f)}{\sqrt{\bar{a}_v^H(f)\bar{a}_u(f)}}
+\end{equation}
+
+\subsection{3D Convolutional Neural Network M}
+
+\subsection{Model Evaluation}
+
+\subsection{Performance Evaluation}
+
+\section{Results and Discussion}
+
+
+\section{Conclusion}
+
 
 
 
