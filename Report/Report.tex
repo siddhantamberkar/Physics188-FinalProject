@@ -54,22 +54,6 @@ The sections below outline the data acquisition, postprocessing, and mathematica
 \subsection{EEG Signal Data}
 Each EEG time series is acquired over a 5-min long recording of the participants during eye-close (EC) and eye-open (EO) resting states. A 19-electrode EEG cap was placed over participants' scalps at FP1, FP2, F3, F4, C3, C4, P3, P4, O1, O2, F7, F8, T3, T4, T5, T6, FZ, CZ, and PZ. The data were recorded with a sampling rate of 256 Hz, and preprocessed with a bandpass filter (0.1–70 Hz) and a 50-Hz notch filter. The EEGLAB software on Matlab was used for the automatic removal of artifacts using artifact subspace reconstruction (ASR) and independent component analysis (ICA). 
 
-\subsection{Partial Directed Coherence (PDC)}
-Partial directed coherence is the frequency-based counterpart to the time-based multivariate autoregressive model (MVAR) fit on EEG time series data. In this paper, we combine both time and frequency based MVGC estiamtes, which include the original and Fourier-transformed MVAR coefficients. 
-
-Let the set of $n$ simultaneously measured time series 
-\begin{equation}
-    Y(t) = [y_1(t), y_2(t),..., y_n(t)]^T
-\end{equation}
-
-be represented by an autogressive model of order \textit{p} given by: 
-\begin{equation}
-    Y(t) = \sum_{l=1}^{p}{\textbf{A}_l\textbf{Y}(t-l)}\space + \boldsymbol{\varepsilon}(t)
-\end{equation}
-where $\textbf{A}_l$ is the coefficient matrix at time lag $l$ and $\boldsymbol{\varepsilon}(t)$ is background multivariate Gaussian noise with zero mean. The MVAR coefficients $a_{uv}(l)$ represent the the effect of $y_v(t-l)$ on $y_u(t)$. Thus, $\textbf{A}_l$ is the matrix corresponding to the time-based MVGC estimate. The frequency-based Fourier transformation of matrix $\textbf{A}_l$, $\textbf{A}(f)$ then has coefficients $a_{uv}(f) = \sum_{l=1}^{p}{a_{uv}(l)e^{-i(\tfrac{2\pi}{p})lf}}$. Centering the matrix $\textbf{A}(f)$ by subtracting $\textbf{I}_n$, we get $\bar{\textbf{A}}(f)$. Finally, the PDC from electrode $u$ to $v$ denoted by $\pi_{uv}(f)$ is defined as
-\begin{equation}
-    \pi_{uv}(f) = \dfrac{\bar{a}_{uv}(f)}{\sqrt{\bar{a}_v^H(f)\bar{a}_u(f)}}
-\end{equation}
 
 \subsection{Granger Causality (GC) Estimation}
 
@@ -114,6 +98,13 @@ The causality $Y \rightarrow X$ conditioned on $Z$, written $F_{Y \rightarrow X|
 In this case, the addition of $Z$ in both regressions is considered as its combined influence. $F_{Y \rightarrow X|Z}$ is interpreted as the extent to which the previous values of $Y$ assist in predicting $X$, beyond the amount to which $X$ is predicted by its own history and by $Z$'s history (\cite{}).
 
 The corresponding p-values from Chi-square significance tests were extracted and used as the GC measure between the two channels. This produces a 19×19 GC matrix.
+
+\subsection{Multi-Layer Perceptron}
+A multi-layer perceptron (MLP) is a simple artificial neural network of sequential transformations and activations to replicate the connection of neurons in the brain. We use this model as a baseline to assess whether a complex convolutional neural network (CNN) model is necessary. 
+
+We first process the 5-min EEG data into 1 second segments, creating 3000 independent samples for each subject. Some of these samples are discarded due to a high presence of noise. Then, we use an 80/20 train-test split on the data by subject, reserving 80\% of MDD and HC subjects for model training and the remaining for testing. 
+
+The architecture of the neural network is easily tunable, from the activation functions used between layers, to the size and depth of each hidden (intermediate) layer. After tuning the architecture to optimize for model performance,  the following architecture was selected. 
 
 \subsection{3D Convolutional Neural Network M}
 
