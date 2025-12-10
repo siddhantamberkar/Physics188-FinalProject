@@ -52,7 +52,7 @@
 \section{Methods}
 The sections below outline the data acquisition, postprocessing, and mathematical and computational frameworks used to train a 3D CNN for MDD classification. 
 \subsection{EEG Signal Data}
-Each EEG time series is acquired over a 5-min long recording of the participants during eye-close (EC) and eye-open (EO) resting states. A 19-electrode EEG cap was placed over participants' scalps at FP1, FP2, F3, F4, C3, C4, P3, P4, O1, O2, F7, F8, T3, T4, T5, T6, FZ, CZ, and PZ. The data were recorded with a sampling rate of 256 Hz, and preprocessed with a bandpass filter (0.1–70 Hz) and a 50-Hz notch filter. The EEGLAB software on Python was used for the automatic removal of artifacts using artifact subspace reconstruction (ASR) and independent component analysis (ICA). 
+Each EEG time series is acquired over a 5-min long recording of the participants during eye-close (EC) and eye-open (EO) resting states. A 19-electrode EEG cap was placed over participants' scalps at FP1, FP2, F3, F4, C3, C4, P3, P4, O1, O2, F7, F8, T3, T4, T5, T6, FZ, CZ, and PZ. The data were recorded with a sampling rate of 256 Hz, and preprocessed with a bandpass filter (0.1–70 Hz) and a 50-Hz notch filter. The EEGLAB software on Matlab was used for the automatic removal of artifacts using artifact subspace reconstruction (ASR) and independent component analysis (ICA). 
 
 \subsection{Partial Directed Coherence (PDC)}
 Partial directed coherence is the frequency-based counterpart to the time-based multivariate autoregressive model (MVAR) fit on EEG time series data. In this paper, we combine both time and frequency based MVGC estiamtes, which include the original and Fourier-transformed MVAR coefficients. 
@@ -70,6 +70,48 @@ where $\textbf{A}_l$ is the coefficient matrix at time lag $l$ and $\boldsymbol{
 \begin{equation}
     \pi_{uv}(f) = \dfrac{\bar{a}_{uv}(f)}{\sqrt{\bar{a}_v^H(f)\bar{a}_u(f)}}
 \end{equation}
+
+\subsection{Granger Causality (GC) Estimation}
+
+EEG data is highly suited for GC analysis due to its high temporal resolution, quick sampling, and often stochastic character (\cite{}). In this work, we use the Multivariate Granger Causality (MVGC) \cite{24} toolbox for GC estimation. The algorithm computes MVGC using time–series data in both the frequency and time domains. It eliminates separate full and reduced regressions, which are a typical cause of statistical inaccuracy and computational inefficiency, therefore improving upon traditional techniques for GC inference \cite{24}. 
+
+The GC formalism relies on vector autoregressive (VAR) modeling for forecasting. VAR$(p)$ is calculated as follows:
+
+\begin{equation}
+    U_t = \sum_{k=1}^{p} A_k U_{t-k} + \varepsilon_t
+\end{equation}
+
+where $p$ is the model order. In this experiment, the Akaike Information Criterion (AIC) was used to establish the proper model order, helping to avoid under–representation or overfitting of the model \cite{48,49}. The AIC for $n$ variables is defined as
+
+\begin{equation}
+    \mathrm{AIC}(p) = \ln\big( \det(\Sigma) \big) + \frac{2pn^2}{T}
+\end{equation}
+
+where $\Sigma$ represents the prediction–error covariance matrix of the bivariate autoregressive model, $p$ is the model order, and $T$ is the signal length.
+
+To demonstrate the conditional situation, the universe $U$, containing the known variables, is considered to be divided into three interdependent multivariate processes:
+
+\begin{equation}
+    U_t = \{ X_t,\; Y_t,\; Z_t \}
+\end{equation}
+
+and any combined influence of $Z$ on the determination of $Y$ to $X$ Granger–causality needs to be eliminated. The VAR$(p)$ model is analogously split into full and reduced regressions as follows:
+
+\begin{equation}
+    X_t = \sum_{k=1}^{p} A_{xx,k}X_{t-k} + \sum_{k=1}^{p} A_{xy,k}Y_{t-k} + \sum_{k=1}^{p} A_{xz,k}Z_{t-k} + \varepsilon_{x,t}
+\end{equation}
+
+\begin{equation}
+    X_t = \sum_{k=1}^{p} A'_{xx,k} X_{t-k} + \sum_{k=1}^{p} A'_{xz,k} Z_{t-k} + \varepsilon'_{x,t}
+\end{equation}
+
+The causality $Y \rightarrow X$ conditioned on $Z$, written $F_{Y \rightarrow X|Z}$, is given by
+
+\begin{equation}
+    F_{Y \rightarrow X|Z} \equiv \ln \frac{\lvert \Sigma'_{xx} \rvert}{\lvert \Sigma_{xx} \rvert}
+\end{equation}
+
+In this case, the addition of $Z$ in both regressions is considered as its combined influence. $F_{Y \rightarrow X|Z}$ is interpreted as the extent to which the previous values of $Y$ assist in predicting $X$, beyond the amount to which $X$ is predicted by its own history and by $Z$'s history (\cite{}).
 
 \subsection{3D Convolutional Neural Network M}
 
