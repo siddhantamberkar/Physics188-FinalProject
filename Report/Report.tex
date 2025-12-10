@@ -102,7 +102,7 @@ The corresponding p-values from Chi-square significance tests were extracted and
 \subsection{Multi-Layer Perceptron}
 A multi-layer perceptron (MLP) is a simple artificial neural network of sequential transformations and activations to replicate the connection of neurons in the brain. We use this model as a baseline to assess whether a complex convolutional neural network (CNN) model is necessary. 
 
-We first process the 5-min EEG data into 1 second segments, creating 3000 independent samples for each subject. Some of these samples are discarded due to a high presence of noise. Then, we use an 80/20 train-test split on the data by subject, reserving 80\% of MDD and HC subjects for model training and the remaining for testing. 
+We first process the 5-min EEG data into 1 second segments, creating 3000 independent samples for each subject. Some of these samples are discarded due to a high presence of noise. Then, we use an 80/20 train-test split on the data by subject, reserving 80\% of MDD and HC subjects for model training and the remaining for testing. That is, the training dataset includes 28 MDD and 24 HC subjects, while the testing dataset includes the remaining 7 MDD and 6 HC subjects. 
 
 The architecture of the neural network is easily tunable, from the activation functions used between layers, to the size and depth of each hidden (intermediate) layer. After tuning the architecture to optimize for model performance,  the following architecture was selected. 
 
