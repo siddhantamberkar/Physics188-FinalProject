@@ -51,6 +51,9 @@
 
 \section{Methods}
 The sections below outline the data acquisition, postprocessing, and mathematical and computational frameworks used to train a 3D CNN for MDD classification. 
+\subsection{Participants}
+For this study, we used the dataset contributed by Mumtaz et al. (\cite{Mumtaz2017WaveletMDD}) and is publicly available at (\cite{FigshareMDD2016}).  34 MDD patients (17 females and 17 males) participated in this study and fulfilled the globally accepted Diagnostic and Statistical Manual-IV (DSM-IV) depression criteria. In addition, a control group of 30 healthy individuals (9 females and 21 men) were recruited. The healthy people were examined for signs of mental disorders and found to be free of such problems.
+
 \subsection{EEG Signal Data}
 Each EEG time series is acquired over a 5-min long recording of the participants during eye-close (EC) and eye-open (EO) resting states. A 19-electrode EEG cap was placed over participants' scalps at FP1, FP2, F3, F4, C3, C4, P3, P4, O1, O2, F7, F8, T3, T4, T5, T6, FZ, CZ, and PZ. The data were recorded with a sampling rate of 256 Hz, and preprocessed with a bandpass filter (0.1–70 Hz) and a 50-Hz notch filter. The EEGLAB software on Matlab was used for the automatic removal of artifacts using artifact subspace reconstruction (ASR) and independent component analysis (ICA). 
 
