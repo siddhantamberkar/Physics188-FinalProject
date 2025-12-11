@@ -57,7 +57,7 @@ Each EEG time series is acquired over a 5-min long recording of the participants
 
 \subsection{Granger Causality (GC) Estimation}
 
-EEG data is highly suited for GC analysis due to its high temporal resolution, quick sampling, and often stochastic character (\cite{}). In this work, we use the Multivariate Granger Causality (MVGC) \cite{24} toolbox for GC estimation. The algorithm computes MVGC using time–series data in both the frequency and time domains. It eliminates separate full and reduced regressions, which are a typical cause of statistical inaccuracy and computational inefficiency, therefore improving upon traditional techniques for GC inference \cite{24}. 
+EEG data is highly suited for GC analysis due to its high temporal resolution, quick sampling, and often stochastic character (\cite{Barnett2014MVGC}). In this work, we use the Multivariate Granger Causality (MVGC) (\cite{Barnett2014MVGC}) toolbox for GC estimation. The algorithm computes MVGC using time–series data in both the frequency and time domains. It eliminates separate full and reduced regressions, which are a typical cause of statistical inaccuracy and computational inefficiency, therefore improving upon traditional techniques for GC inference (\cite{Barnett2014MVGC}). 
 
 The GC formalism relies on vector autoregressive (VAR) modeling for forecasting. VAR$(p)$ is calculated as follows:
 
@@ -65,7 +65,7 @@ The GC formalism relies on vector autoregressive (VAR) modeling for forecasting.
     U_t = \sum_{k=1}^{p} A_k U_{t-k} + \varepsilon_t
 \end{equation}
 
-where $p$ is the model order. In this experiment, the Akaike Information Criterion (AIC) was used to establish the proper model order, helping to avoid under–representation or overfitting of the model \cite{48,49}. The AIC for $n$ variables is defined as
+where $p$ is the model order. In this experiment, the Akaike Information Criterion (AIC) was used to establish the proper model order, helping to avoid under–representation or overfitting of the mode. The AIC for $n$ variables is defined as
 
 \begin{equation}
     \mathrm{AIC}(p) = \ln\big( \det(\Sigma) \big) + \frac{2pn^2}{T}
@@ -95,7 +95,7 @@ The causality $Y \rightarrow X$ conditioned on $Z$, written $F_{Y \rightarrow X|
     F_{Y \rightarrow X|Z} \equiv \ln \frac{\lvert \Sigma'_{xx} \rvert}{\lvert \Sigma_{xx} \rvert}
 \end{equation}
 
-In this case, the addition of $Z$ in both regressions is considered as its combined influence. $F_{Y \rightarrow X|Z}$ is interpreted as the extent to which the previous values of $Y$ assist in predicting $X$, beyond the amount to which $X$ is predicted by its own history and by $Z$'s history (\cite{}).
+In this case, the addition of $Z$ in both regressions is considered as its combined influence. $F_{Y \rightarrow X|Z}$ is interpreted as the extent to which the previous values of $Y$ assist in predicting $X$, beyond the amount to which $X$ is predicted by its own history and by $Z$'s history (\cite{Barnett2014MVGC}).
 
 The corresponding p-values from Chi-square significance tests were extracted and used as the GC measure between the two channels. This produces a 19×19 GC matrix.
 
