@@ -100,7 +100,17 @@ To mitigate overfitting, dropout with a rate of 0.2 is applied to all hidden lay
 \end{figure}
 
 
-\subsubsection{Results}
+
+
+\subsection{3D Convolutional Neural Network M}
+
+\subsection{Model Evaluation}
+
+\subsection{Performance Evaluation}
+
+\section{Results and Discussion}
+
+\subsection{MLP Results}
 Overall, deeper architectures with larger hidden layers performed better than shallower networks. In particular, models with multiple hidden layers and higher capacity achieved improved test accuracy compared to simpler configurations. The combination of ReLU activations in early layers and Swish activation in the final hidden layer consistently outperformed architectures using a single activation type. Additionally, the inclusion of dropout and batch normalization improved generalization performance.
 
 The best-performing model achieved a test accuracy of approximately $61.2\%$, indicating modest but above-chance classification of MDD versus healthy controls based solely on MVGC connectivity features. Despite near-perfect training accuracy, test performance remained limited, suggesting overfitting and highlighting the difficulty of the classification task.
@@ -127,7 +137,7 @@ These examples highlight systematic differences in connectivity structure betwee
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.9\linewidth]{Figures/MLP_sample.png}
+    \includegraphics[width=0.9\linewidth]{Figures/MLP_samples.png}
     \caption{Representative examples of MVGC connectivity matrices from the test set, grouped by classification outcome: true positives (TP), false positives (FP), true negatives (TN), and false negatives (FN).}
     \label{fig:mlp_confusion_examples}
 \end{figure}
@@ -147,17 +157,6 @@ These examples highlight systematic differences in connectivity structure betwee
 \end{table}
 
 These results suggest that increased architectural complexity improves performance up to a point, beyond which additional layers yield diminishing returns. While the achieved accuracy remains limited, the findings demonstrate that EEG-derived Granger causality connectivity patterns contain diagnostically relevant information for MDD classification.
-
-
-\subsection{3D Convolutional Neural Network M}
-
-\subsection{Model Evaluation}
-
-\subsection{Performance Evaluation}
-
-\section{Results and Discussion}
-
-
 \section{Conclusion}
 
 
